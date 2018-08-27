@@ -1,6 +1,6 @@
 import re
 
-class Convert:
+class Parser:
 
     def remove_end_tags(self, html_string):
 
