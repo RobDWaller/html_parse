@@ -1,4 +1,4 @@
-class Content:
+class Parse:
 
     def __init__(self):
         pass
