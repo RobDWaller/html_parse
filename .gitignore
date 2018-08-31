@@ -1,3 +1,6 @@
 __pycache__
 .mypy_cache
 .coverage
+*.egg-info
+dist
+build
