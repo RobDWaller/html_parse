@@ -13,6 +13,4 @@ def parse(html_string):
 
     parser = Parser()
 
-    json = parser.remove_end_tags(html_string)
-
-    return Parse(json)
+    return Parse(parser.parse(html_string))

@@ -1,3 +1,4 @@
+import json
 '''
 Module contains Parse class which is returned after the HTML string has been
 parsed
@@ -7,17 +8,30 @@ class Parse:
     Parse class which is constructed after the HTML string has been parsed to
     JSON. Class also contains helper methods to access useful content.
     '''
-    def __init__(self, json):
-        self.json = json
+    def __init__(self, html_data):
+        self.html_data = html_data
 
-    def get_json(self):
+    def get_html_data(self):
         '''
-        return the json string
+        return the html_data array
         '''
-        return self.json
+        return self.html_data
 
     def get_title(self):
         '''
-        Get the title of the html string
+        Get the title of the html document
         '''
-        return self.json
+
+        def func(html_data):
+            for dict in html_data:
+                return 'title' in dict
+
+        result = list(filter(func, self.html_data))
+
+        return result[0]['title']
+
+    def get_json(self):
+        '''
+        Turn the the html data into a json string and return it
+        '''
+        return json.dumps(self.html_data)

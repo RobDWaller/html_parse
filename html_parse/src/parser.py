@@ -16,7 +16,7 @@ class Parser:
         Strip all HTML closing tags from html string replace with semi-colons
         '''
 
-        return re.sub('</[a-z]*>', ';', html_string)
+        return re.sub('</[a-z]*>', '|;|', html_string)
 
     @classmethod
     def clean_start_tags(cls, string):
@@ -38,7 +38,7 @@ class Parser:
         Remove any doubled up semi-colons from string
         '''
 
-        return re.sub('[;]{2,}', ';', string)
+        return re.sub('[|;|]{2,}', '|;|', string)
 
     @staticmethod
     def tag_to_key(string):
@@ -46,4 +46,32 @@ class Parser:
         Replace opening html tag in front of content with name of tag and colon
         '''
 
-        return re.sub('<([a-z]*)>', r'\g<1>:', string)
+        return re.sub('<([a-z]*)>', r'\g<1>|:|', string)
+
+    @staticmethod
+    def to_array(string):
+        '''
+        Remove ending |;| delimiter and explode processed string into array
+        on |;| delimiter
+        '''
+        return re.sub('\|\;\|$', '', string).split('|;|')
+
+    @staticmethod
+    def to_associate(array):
+
+        new_array = []
+
+        for value in array:
+            result = value.split('|:|')
+            new_array.append({result[0]: re.sub('\|$', '', result[1])})
+
+        return new_array
+
+    def parse(self, html_string):
+
+        result = self.remove_end_tags(html_string)
+        result = self.clean_start_tags(result)
+        result = self.remove_hanging_colons(result)
+        result = self.tag_to_key(result)
+        result = self.to_array(result)
+        return self.to_associate(result)

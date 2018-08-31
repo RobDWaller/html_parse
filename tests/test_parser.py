@@ -9,7 +9,7 @@ class TestParser(unittest.TestCase):
 
         html_string = '<title>Hello</title>'
 
-        self.assertEqual(parser.remove_end_tags(html_string), '<title>Hello;')
+        self.assertEqual(parser.remove_end_tags(html_string), '<title>Hello|;|')
 
     def test_remove_end_tags_with_head(self):
 
@@ -17,7 +17,7 @@ class TestParser(unittest.TestCase):
 
         html_string = '<head><title>Hello</title></head>'
 
-        self.assertEqual(parser.remove_end_tags(html_string), '<head><title>Hello;;')
+        self.assertEqual(parser.remove_end_tags(html_string), '<head><title>Hello|;||;|')
 
     def test_remove_end_tags_with_html(self):
 
@@ -25,7 +25,7 @@ class TestParser(unittest.TestCase):
 
         html_string = '<html><head><title>Hello</title></head></html>'
 
-        self.assertEqual(parser.remove_end_tags(html_string), '<html><head><title>Hello;;;')
+        self.assertEqual(parser.remove_end_tags(html_string), '<html><head><title>Hello|;||;||;|')
 
     def test_remove_end_tags_web_page(self):
 
@@ -33,63 +33,63 @@ class TestParser(unittest.TestCase):
 
         html_string = '<html><head><title>Hello</title></head><body><p>World</p></body></html>'
 
-        self.assertEqual(parser.remove_end_tags(html_string), '<html><head><title>Hello;;<body><p>World;;;')
+        self.assertEqual(parser.remove_end_tags(html_string), '<html><head><title>Hello|;||;|<body><p>World|;||;||;|')
 
     def test_clean_start_tags(self):
 
         parser = Parser()
 
-        html_string = '<title>Hello;'
+        html_string = '<title>Hello|;|'
 
-        self.assertEqual(parser.clean_start_tags(html_string), '<title>Hello;')
+        self.assertEqual(parser.clean_start_tags(html_string), '<title>Hello|;|')
 
     def test_clean_start_tags_with_head(self):
 
         parser = Parser()
 
-        html_string = '<head><title>Hello;'
+        html_string = '<head><title>Hello|;|'
 
-        self.assertEqual(parser.clean_start_tags(html_string), '<title>Hello;')
+        self.assertEqual(parser.clean_start_tags(html_string), '<title>Hello|;|')
 
     def test_clean_start_tags_with_html(self):
 
         parser = Parser()
 
-        html_string = '<html><head><title>Hello;'
+        html_string = '<html><head><title>Hello|;|'
 
-        self.assertEqual(parser.clean_start_tags(html_string), '<title>Hello;')
+        self.assertEqual(parser.clean_start_tags(html_string), '<title>Hello|;|')
 
     def test_clean_start_tags_web_page(self):
 
         parser = Parser()
 
-        html_string = '<html><head><title>Hello;;<body><p>World;;;'
+        html_string = '<html><head><title>Hello|;||;|<body><p>World|;||;||;|'
 
-        self.assertEqual(parser.clean_start_tags(html_string), '<title>Hello;;<p>World;;;')
+        self.assertEqual(parser.clean_start_tags(html_string), '<title>Hello|;||;|<p>World|;||;||;|')
 
     def test_remove_hanging_colons(self):
 
         parser = Parser()
 
-        colons = ';;;;'
+        colons = '|;||;||;||;|'
 
-        self.assertEqual(parser.remove_hanging_colons(colons), ';')
+        self.assertEqual(parser.remove_hanging_colons(colons), '|;|')
 
     def test_remove_hanging_colons_with_text(self):
 
         parser = Parser()
 
-        string = ';hello;;;'
+        string = '|;|hello|;||;||;|'
 
-        self.assertEqual(parser.remove_hanging_colons(string), ';hello;')
+        self.assertEqual(parser.remove_hanging_colons(string), '|;|hello|;|')
 
     def test_remove_hanging_colons_with_html(self):
 
         parser = Parser()
 
-        html_string = '<title>Hello;;<p>World;;;'
+        html_string = '<title>Hello|;||;|<p>World|;||;||;|'
 
-        self.assertEqual(parser.remove_hanging_colons(html_string), '<title>Hello;<p>World;')
+        self.assertEqual(parser.remove_hanging_colons(html_string), '<title>Hello|;|<p>World|;|')
 
     def test_tag_to_key(self):
 
@@ -97,12 +97,48 @@ class TestParser(unittest.TestCase):
 
         html_string = '<title>'
 
-        self.assertEqual(parser.tag_to_key(html_string), 'title:')
+        self.assertEqual(parser.tag_to_key(html_string), 'title|:|')
 
     def test_tag_to_key_tag_and_text(self):
 
         parser = Parser()
 
-        html_string = '<title>Hello;<p>World;'
+        html_string = '<title>Hello|;|<p>World|;|'
 
-        self.assertEqual(parser.tag_to_key(html_string), 'title:Hello;p:World;')
+        self.assertEqual(parser.tag_to_key(html_string), 'title|:|Hello|;|p|:|World|;|')
+
+    def test_to_array(self):
+
+        parser = Parser()
+
+        html_string = 'title|:|Hello|;|p|:|World|;|'
+
+        result = parser.to_array(html_string)
+
+        self.assertEqual(result[0], 'title|:|Hello')
+        self.assertEqual(result[1], 'p|:|World')
+        self.assertEqual(len(result), 2)
+
+    def test_to_associate(self):
+
+        parser = Parser()
+
+        array = ['title|:|Hello|','p|:|World|']
+
+        result = parser.to_associate(array)
+
+        self.assertEqual(result[0]['title'], 'Hello')
+        self.assertEqual(result[1]['p'], 'World')
+        self.assertEqual(len(result), 2)
+
+    def test_parse(self):
+
+        parser = Parser()
+
+        html_string = '<html><head><title>Hello</title></head><body><p>World</p></body></html>'
+
+        result = parser.parse(html_string)
+
+        self.assertEqual(result[0]['title'], 'Hello')
+        self.assertEqual(result[1]['p'], 'World')
+        self.assertEqual(len(result), 2)
