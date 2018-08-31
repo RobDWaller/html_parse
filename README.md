@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/RobDWaller/html_parse.svg?branch=master)](https://travis-ci.org/RobDWaller/html_parse) [![codecov](https://codecov.io/gh/RobDWaller/html_parse/branch/master/graph/badge.svg)](https://codecov.io/gh/RobDWaller/html_parse) [![Maintainability](https://api.codeclimate.com/v1/badges/d43c3780ccf78820c5b7/maintainability)](https://codeclimate.com/github/RobDWaller/gingerfy/maintainability)
 # Python HTML Parse
 
-Parse HTML strings in to a value object that can output JSON and offers a number of helper methods.
+Parse HTML strings into a value object that can output JSON and offers a number of helper methods.
 
 ## Usage
 
