@@ -6,5 +6,18 @@ python:
     - "3.5"
     - "3.6"
 
+install:
+    - sudo apt-get install -y python-pip
+    - pip install pylint
+    - pip install coverage
+    - pip install codecov
+    - pip install mypy
+
 script:
     - python -m unittest discover tests/
+    - python -m mypy html_parse/
+    - python -m pylint html_parse/
+    - coverage run --source html_parse/ -m unittest discover tests/
+
+after_success:
+    - codecov
