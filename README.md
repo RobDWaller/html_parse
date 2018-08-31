@@ -14,7 +14,7 @@ print(result.get_title())
 # Output: Hello World
 
 print(result.get_json())
-# Output: {['title': 'Hello World']}
+# Output: [{"title": "Hello World"}]
 ```
 
 ### Methods available on Parse object
