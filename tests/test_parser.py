@@ -119,13 +119,13 @@ class TestParser(unittest.TestCase):
         self.assertEqual(result[1], 'p|:|World')
         self.assertEqual(len(result), 2)
 
-    def test_to_associate(self):
+    def test_to_dicts(self):
 
         parser = Parser()
 
         array = ['title|:|Hello|','p|:|World|']
 
-        result = parser.to_associate(array)
+        result = parser.to_dicts(array)
 
         self.assertEqual(result[0]['title'], 'Hello')
         self.assertEqual(result[1]['p'], 'World')

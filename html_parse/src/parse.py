@@ -1,8 +1,9 @@
-import json
 '''
 Module contains Parse class which is returned after the HTML string has been
 parsed
 '''
+import json
+
 class Parse:
     '''
     Parse class which is constructed after the HTML string has been parsed to
@@ -23,8 +24,8 @@ class Parse:
         '''
 
         def func(html_data):
-            for dict in html_data:
-                return 'title' in dict
+            for value in html_data:
+                return 'title' in value
 
         result = list(filter(func, self.html_data))
 
