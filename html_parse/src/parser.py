@@ -66,6 +66,7 @@ class Parser:
 
         for value in array:
             result = value.split('|:|')
+
             new_array.append({result[0]: re.sub(r'\|$', '', result[1])})
 
         return new_array
