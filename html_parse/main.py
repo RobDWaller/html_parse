@@ -11,6 +11,6 @@ def parse(html_string):
     helper methods
     '''
 
-    parser = Parser()
+    parser = Parser(html_string)
 
-    return Parse(parser.parse(html_string))
+    return Parse(parser.parse())

@@ -12,11 +12,9 @@ class TestParse(unittest.TestCase):
 
     def test_get_html_data(self):
 
-        html_string = '<html><head><title>Hello</title></head><body><p>World</p></body></html>'
+        parser = Parser('<html><head><title>Hello</title></head><body><p>World</p></body></html>')
 
-        parser = Parser()
-
-        parse = Parse(parser.parse(html_string))
+        parse = Parse(parser.parse())
 
         result = parse.get_html_data()
 
@@ -26,20 +24,16 @@ class TestParse(unittest.TestCase):
 
     def test_get_title(self):
 
-        html_string = '<html><head><title>Hello</title></head><body><p>World</p></body></html>'
+        parser = Parser('<html><head><title>Hello</title></head><body><p>World</p></body></html>')
 
-        parser = Parser()
-
-        parse = Parse(parser.parse(html_string))
+        parse = Parse(parser.parse())
 
         self.assertEqual(parse.get_title(), 'Hello')
 
     def test_get_json(self):
 
-        html_string = '<html><head><title>Hello</title></head><body><p>World</p></body></html>'
+        parser = Parser('<html><head><title>Hello</title></head><body><p>World</p></body></html>')
 
-        parser = Parser()
-
-        parse = Parse(parser.parse(html_string))
+        parse = Parse(parser.parse())
 
         self.assertEqual(parse.get_json(), '[{"title": "Hello"}, {"p": "World"}]')
